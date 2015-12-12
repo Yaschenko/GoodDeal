@@ -42,15 +42,18 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBAction func loginAction() {
         let checkDataResult = self.checkData()
         if checkDataResult.result {
-            ServerConnectionsManager.sharedInstance.sendPostRequest(path: "api/v1/sessions", data: ["email":"volonter@example.com1", "password":"password"], callback: {(result:Bool!, json:AnyObject?)->Void in
+            ServerConnectionsManager.sharedInstance.sendPostRequest(path: "api/v1/sessions", data: ["email":login.text!, "password":password.text!], callback: {(result:Bool!, json:AnyObject?)->Void in
+                print(json!.description)
                 if result == true {
-                    print("sdasdsad"+json!.description)
+                    NSUserDefaults.standardUserDefaults().setValue(json!["auth_token"] as! String, forKey: "auth_token")
+                    NSUserDefaults.standardUserDefaults().setValue(json!["email"] as! String, forKey: "email")
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.view.endEditing(true)
+                        self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                            
+                        })
+                    })
                 }
-            })
-            NSUserDefaults.standardUserDefaults().setValue(login.text, forKey: "login")
-            self.view.endEditing(true)
-            self.dismissViewControllerAnimated(true, completion: { () -> Void in
-                
             })
         } else {
             let alert : UIAlertController! = UIAlertController(title: "Ошибка", message: checkDataResult.error, preferredStyle: UIAlertControllerStyle.Alert)

@@ -7,27 +7,17 @@
 //
 
 import UIKit
-import MobileCoreServices
 
-class ChildRegistrationViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ChildRegistrationViewController: CameraViewController, UITextFieldDelegate, UITextViewDelegate {
     @IBOutlet var name:UITextField!
     @IBOutlet var age:UITextField!
     @IBOutlet var address:UITextField!
     @IBOutlet var prize:UITextView!
-    @IBOutlet var imagePickerButton:UIButton!
     @IBOutlet var bottomConstraint:NSLayoutConstraint!
-    var videoFile:String?
-    lazy var imagePicker:UIImagePickerController! = {
-        let picker:UIImagePickerController! = UIImagePickerController()
-        picker.sourceType = UIImagePickerControllerSourceType.Camera
-        picker.mediaTypes = [kUTTypeMovie as String]
-        picker.allowsEditing = false
-        picker.delegate = self
-        return picker
-    }()
+    @IBOutlet var waitingView:UIView!
     var keyboard:Bool!
     let bottomConstraintDefaultValue:CGFloat! = 8
-    
+    var needSend:Bool = false
     override func viewDidLoad() {
         super.viewDidLoad()
         keyboard = false
@@ -87,21 +77,89 @@ class ChildRegistrationViewController: UIViewController, UITextFieldDelegate, UI
             })
         }
     }
-    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+
+    func send() {
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            let mainView = UIApplication.sharedApplication().keyWindow
+            self.waitingView.frame = (mainView?.bounds)!
+            mainView?.addSubview(self.waitingView)
+        }
+        ServerConnectionsManager.sharedInstance.sendMultipartData(path: "api/v1/kids", file: (self.videoFile! as NSString).lastPathComponent, data: ["name":name.text!,"age":age.text!,"description":prize.text!, "address":address.text!], callback: { (result:Bool!, json:AnyObject?)->Void in
+            if json != nil {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.waitingView.removeFromSuperview()
+                    let alert : UIAlertController! = UIAlertController(title: "Готово", message: "Письмо отправлено", preferredStyle: UIAlertControllerStyle.Alert)
+                    
+                    let defaultAction : UIAlertAction! = UIAlertAction(title: "Хорошо", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction) -> Void in
+                        self.navigationController?.popViewControllerAnimated(true)
+                    })
+                    alert.addAction(defaultAction)
+                    self.presentViewController(alert, animated: true, completion: { () -> Void in
+                    })
+                })
+            } else {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.waitingView.removeFromSuperview()
+                    let alert : UIAlertController! = UIAlertController(title: "Ошибка", message: "Письмо не отправлено", preferredStyle: UIAlertControllerStyle.Alert)
+                    
+                    let defaultAction : UIAlertAction! = UIAlertAction(title: "Хорошо", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction) -> Void in
+                    })
+                    alert.addAction(defaultAction)
+                    self.presentViewController(alert, animated: true, completion: { () -> Void in
+                    })
+                })
+            }
+        })
+    }
+    override func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        videoFile = nil
+        imagePickerButton.setTitle("Изменить видео обращение", forState: UIControlState.Normal)
         self.dismissViewControllerAnimated(true) { () -> Void in
-            
+            weak var weakSelf:ChildRegistrationViewController?
+            weakSelf = self
+            self.prepareVideo(info[UIImagePickerControllerMediaURL] as? NSURL) { (result:String?) -> Void in
+                if result != nil && weakSelf != nil {
+                    weakSelf!.videoFile = result!
+                    if weakSelf!.needSend == true {self.send()}
+                }
+            }
+
         }
     }
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
-//        print(info.description)
-        
-        videoFile = info[UIImagePickerControllerMediaURL] as? String
-        if videoFile != nil {
-            imagePickerButton.setTitle("Изменить видео обращение", forState: UIControlState.Normal)
+    func checkData() -> (result:Bool, error:String?, field:UIView?){
+        if name.text == nil || name.text?.characters.count == 0{
+            return (false, "Введите ФИО", name)
         }
-        self.dismissViewControllerAnimated(true) { () -> Void in
+        if age.text == nil || age.text?.characters.count == 0{
+            return (false, "Введите возраст", age)
+        }
+        if address.text == nil || address.text?.characters.count == 0{
+            return (false, "Введите адрес", address)
+        }
+        if prize.text == nil || prize.text?.characters.count == 0{
+            return (false, "Введите описание подарка", prize)
+        }
+        return (true, nil, nil)
+    }
+    @IBAction func sendLetter() {
+        let checkDataResult = self.checkData()
+        needSend = checkDataResult.result
+        if !needSend {
+            let alert : UIAlertController! = UIAlertController(title: "Ошибка", message: checkDataResult.error, preferredStyle: UIAlertControllerStyle.Alert)
             
+            let defaultAction : UIAlertAction! = UIAlertAction(title: "Хорошо", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction) -> Void in
+                checkDataResult.field!.becomeFirstResponder()
+            })
+            alert.addAction(defaultAction)
+            self.presentViewController(alert, animated: true, completion: { () -> Void in
+                
+            })
+        } else if videoFile != nil {
+            self.send()
+        } else {
+            needSend = false
         }
+        
     }
     /*
     // MARK: - Navigation

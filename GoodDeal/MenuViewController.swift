@@ -17,9 +17,9 @@ class MenuViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        let userLogin : String? = NSUserDefaults.standardUserDefaults().valueForKey("login") as? String
+        let userLogin : String? = NSUserDefaults.standardUserDefaults().valueForKey("email") as? String
         
-        if userLogin == nil {
+        if NSUserDefaults.standardUserDefaults().valueForKey("email") as? String == nil {
             self.showLoginView()
         } else {
             self.navigationItem.title = userLogin!
@@ -31,7 +31,8 @@ class MenuViewController: UIViewController {
     }
     
     @IBAction func showLoginView() {
-        NSUserDefaults.standardUserDefaults().removeObjectForKey("login")
+        NSUserDefaults.standardUserDefaults().removeObjectForKey("auth_token")
+        NSUserDefaults.standardUserDefaults().removeObjectForKey("email")
         self.presentViewController(UIStoryboard(name: "Login", bundle: nil).instantiateInitialViewController()!, animated: true, completion: { () -> Void in
             
         })
