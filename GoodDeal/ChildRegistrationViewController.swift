@@ -14,6 +14,7 @@ class ChildRegistrationViewController: UIViewController, UITextFieldDelegate, UI
     @IBOutlet var age:UITextField!
     @IBOutlet var address:UITextField!
     @IBOutlet var prize:UITextView!
+    @IBOutlet var imagePickerButton:UIButton!
     @IBOutlet var bottomConstraint:NSLayoutConstraint!
     var videoFile:String?
     lazy var imagePicker:UIImagePickerController! = {
@@ -95,6 +96,9 @@ class ChildRegistrationViewController: UIViewController, UITextFieldDelegate, UI
 //        print(info.description)
         
         videoFile = info[UIImagePickerControllerMediaURL] as? String
+        if videoFile != nil {
+            imagePickerButton.setTitle("Изменить видео обращение", forState: UIControlState.Normal)
+        }
         self.dismissViewControllerAnimated(true) { () -> Void in
             
         }

@@ -24,7 +24,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     func checkData() -> (result:Bool, error:String?, field:UITextField?) {
         if login.text == nil || login.text?.characters.count == 0{
-            return (false, "Введите номер волонтера", login)
+            return (false, "Введите электронную почту", login)
         }
         if password.text == nil || password.text?.characters.count == 0{
             return (false, "Введите пароль", password)
@@ -42,6 +42,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBAction func loginAction() {
         let checkDataResult = self.checkData()
         if checkDataResult.result {
+            ServerConnectionsManager.sharedInstance.sendPostRequest(path: "api/v1/sessions", data: ["email":"volonter@example.com1", "password":"password"], callback: {(result:Bool!, json:AnyObject?)->Void in
+                if result == true {
+                    print("sdasdsad"+json!.description)
+                }
+            })
             NSUserDefaults.standardUserDefaults().setValue(login.text, forKey: "login")
             self.view.endEditing(true)
             self.dismissViewControllerAnimated(true, completion: { () -> Void in
