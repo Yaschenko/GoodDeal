@@ -33,9 +33,37 @@
                     <view key="view" contentMode="scaleToFill" id="ANT-Jm-nBD">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aFg-cc-nmK">
+                                <rect key="frame" x="98" y="221" width="125" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="125" id="Ytj-Ol-uEb"/>
+                                    <constraint firstAttribute="height" constant="30" id="tig-Vt-9kx"/>
+                                </constraints>
+                                <state key="normal" title="Просмотреть все"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8hD-sh-ElI">
+                                <rect key="frame" x="83" y="148" width="154" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="154" id="6HL-Qg-Rci"/>
+                                    <constraint firstAttribute="height" constant="30" id="dIn-tX-ABK"/>
+                                </constraints>
+                                <state key="normal" title="Добавить обращение"/>
+                                <connections>
+                                    <segue destination="tGW-Vs-SrI" kind="show" id="48X-Ho-fde"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="aFg-cc-nmK" firstAttribute="centerX" secondItem="ANT-Jm-nBD" secondAttribute="centerX" id="3LR-wv-2LD"/>
+                            <constraint firstItem="aFg-cc-nmK" firstAttribute="top" secondItem="8hD-sh-ElI" secondAttribute="bottom" constant="43" id="b9e-Zk-stu"/>
+                            <constraint firstItem="8hD-sh-ElI" firstAttribute="centerX" secondItem="ANT-Jm-nBD" secondAttribute="centerX" id="jge-20-hDc"/>
+                            <constraint firstItem="8hD-sh-ElI" firstAttribute="top" secondItem="rGE-v6-nMS" secondAttribute="bottom" constant="84" id="lJu-Uc-vcu"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="zgl-Oe-6Q8">
+                        <barButtonItem key="backBarButtonItem" title="Назад" id="MuU-DR-TiH"/>
                         <barButtonItem key="leftBarButtonItem" title="Выйти" id="Y5d-YB-9yf">
                             <connections>
                                 <action selector="showLoginView" destination="9Je-6v-Bvg" id="J8m-3O-bUE"/>
@@ -47,6 +75,105 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZbH-Vc-FhM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-207" y="239"/>
+        </scene>
+        <!--Обращение-->
+        <scene sceneID="4Cn-gy-KPQ">
+            <objects>
+                <viewController id="tGW-Vs-SrI" customClass="ChildRegistrationViewController" customModule="GoodDeal" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="q9b-rH-Xaj"/>
+                        <viewControllerLayoutGuide type="bottom" id="xvP-82-ysS"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="GFo-pI-BQ7">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="ФИО" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XaM-1s-bci">
+                                <rect key="frame" x="20" y="72" width="280" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="CWU-DU-U7A"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="tGW-Vs-SrI" id="yGL-hp-CLr"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Возраст" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6xU-Kr-quW">
+                                <rect key="frame" x="20" y="110" width="280" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="4Yb-Gg-0cP"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="tGW-Vs-SrI" id="EH3-ZU-6vC"/>
+                                </connections>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BYQ-zF-Eem">
+                                <rect key="frame" x="20" y="186" width="280" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="GA9-k7-v12"/>
+                                </constraints>
+                                <state key="normal" title="Прикрепить видео обращение"/>
+                                <connections>
+                                    <action selector="showImagePickerController" destination="tGW-Vs-SrI" eventType="touchUpInside" id="zWT-U5-1dq"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Адрес" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Syv-Xg-Tge">
+                                <rect key="frame" x="20" y="148" width="280" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="hEE-pR-MBn"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="tGW-Vs-SrI" id="sSF-Q6-nTD"/>
+                                </connections>
+                            </textField>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="hhp-0V-C9M">
+                                <rect key="frame" x="20" y="224" width="280" height="336"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <connections>
+                                    <outlet property="delegate" destination="tGW-Vs-SrI" id="jLg-l0-EL2"/>
+                                </connections>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="6xU-Kr-quW" firstAttribute="leading" secondItem="GFo-pI-BQ7" secondAttribute="leading" constant="20" id="3JA-LK-Xdf"/>
+                            <constraint firstAttribute="trailing" secondItem="BYQ-zF-Eem" secondAttribute="trailing" constant="20" id="3Xr-Du-hF1"/>
+                            <constraint firstItem="6xU-Kr-quW" firstAttribute="top" secondItem="XaM-1s-bci" secondAttribute="bottom" constant="8" id="51Q-x6-efU"/>
+                            <constraint firstItem="BYQ-zF-Eem" firstAttribute="leading" secondItem="GFo-pI-BQ7" secondAttribute="leading" constant="20" id="5sE-E9-SQR"/>
+                            <constraint firstItem="hhp-0V-C9M" firstAttribute="top" secondItem="BYQ-zF-Eem" secondAttribute="bottom" constant="8" id="74E-f2-7tj"/>
+                            <constraint firstItem="XaM-1s-bci" firstAttribute="top" secondItem="q9b-rH-Xaj" secondAttribute="bottom" constant="8" id="CDZ-XO-LBn"/>
+                            <constraint firstItem="XaM-1s-bci" firstAttribute="leading" secondItem="GFo-pI-BQ7" secondAttribute="leading" constant="20" id="IhD-QX-URF"/>
+                            <constraint firstAttribute="trailing" secondItem="6xU-Kr-quW" secondAttribute="trailing" constant="20" id="Jvl-Hi-zkd"/>
+                            <constraint firstAttribute="trailing" secondItem="Syv-Xg-Tge" secondAttribute="trailing" constant="20" id="WlA-TT-M2a"/>
+                            <constraint firstItem="BYQ-zF-Eem" firstAttribute="top" secondItem="Syv-Xg-Tge" secondAttribute="bottom" constant="8" id="Wzf-k8-O3L"/>
+                            <constraint firstItem="Syv-Xg-Tge" firstAttribute="top" secondItem="6xU-Kr-quW" secondAttribute="bottom" constant="8" id="XZ7-v3-Yh7"/>
+                            <constraint firstItem="hhp-0V-C9M" firstAttribute="leading" secondItem="GFo-pI-BQ7" secondAttribute="leading" constant="20" id="aLD-Qq-lAg"/>
+                            <constraint firstItem="xvP-82-ysS" firstAttribute="top" secondItem="hhp-0V-C9M" secondAttribute="bottom" constant="8" id="aXy-vB-kRf"/>
+                            <constraint firstItem="Syv-Xg-Tge" firstAttribute="leading" secondItem="GFo-pI-BQ7" secondAttribute="leading" constant="20" id="hUO-9X-XdT"/>
+                            <constraint firstAttribute="trailing" secondItem="hhp-0V-C9M" secondAttribute="trailing" constant="20" id="oBU-AA-uYP"/>
+                            <constraint firstAttribute="trailing" secondItem="XaM-1s-bci" secondAttribute="trailing" constant="20" id="sqa-nF-0Iq"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Обращение" id="164-QH-9Cl">
+                        <barButtonItem key="rightBarButtonItem" title="Отправить" id="Lkm-ft-hqO"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="address" destination="Syv-Xg-Tge" id="PZv-8P-eUS"/>
+                        <outlet property="age" destination="6xU-Kr-quW" id="ctN-hM-diP"/>
+                        <outlet property="bottomConstraint" destination="aXy-vB-kRf" id="m50-k5-378"/>
+                        <outlet property="name" destination="XaM-1s-bci" id="RVc-TM-RkA"/>
+                        <outlet property="prize" destination="hhp-0V-C9M" id="qdz-0w-qki"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OJk-qO-8vr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="257" y="239"/>
         </scene>
     </scenes>
 </document>

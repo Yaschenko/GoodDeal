@@ -43,6 +43,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         let checkDataResult = self.checkData()
         if checkDataResult.result {
             NSUserDefaults.standardUserDefaults().setValue(login.text, forKey: "login")
+            self.view.endEditing(true)
             self.dismissViewControllerAnimated(true, completion: { () -> Void in
                 
             })
