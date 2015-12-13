@@ -294,6 +294,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="Q6a-8l-YsA"/>
                                 </constraints>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
@@ -302,6 +303,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="IZV-BX-t2c"/>
                                 </constraints>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
@@ -320,11 +322,21 @@
                                     <action selector="showImagePickerController" destination="tGW-Vs-SrI" eventType="touchUpInside" id="zWT-U5-1dq"/>
                                 </connections>
                             </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="hhp-0V-C9M">
+                                <rect key="frame" x="44" y="321" width="232" height="182"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <connections>
+                                    <outlet property="delegate" destination="tGW-Vs-SrI" id="jLg-l0-EL2"/>
+                                </connections>
+                            </textView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Адрес" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Syv-Xg-Tge" customClass="CustomTextField" customModule="GoodDeal" customModuleProvider="target">
                                 <rect key="frame" x="44" y="231" width="232" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="3M4-X1-bRL"/>
                                 </constraints>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
@@ -366,14 +378,6 @@
                                     <action selector="sendLetter" destination="tGW-Vs-SrI" eventType="touchUpInside" id="sgr-dg-otP"/>
                                 </connections>
                             </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="hhp-0V-C9M">
-                                <rect key="frame" x="44" y="321" width="232" height="182"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                <connections>
-                                    <outlet property="delegate" destination="tGW-Vs-SrI" id="jLg-l0-EL2"/>
-                                </connections>
-                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
