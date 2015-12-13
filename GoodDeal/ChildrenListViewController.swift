@@ -32,6 +32,7 @@ class ChildrenListViewController: CameraViewController, UITableViewDelegate, UIT
     var isLoading:Bool = false
     var childId:Int? = nil
     var childIndexPath:NSIndexPath? = nil
+    var showIndicator:Bool = true
     override func viewDidLoad() {
         super.viewDidLoad()
         self.loadData(1)
@@ -54,6 +55,10 @@ class ChildrenListViewController: CameraViewController, UITableViewDelegate, UIT
                 self.hasNextPage = ((json!["links"] as! [AnyObject]).count > 1)
                 if (json!["kids"] as! [AnyObject]).count == 0 {
                     self.hasNextPage = false
+                    self.showIndicator = false
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.tableView.reloadData()
+                    })
                     return
                 }
                 let i1:Int = self.data.count
@@ -65,6 +70,7 @@ class ChildrenListViewController: CameraViewController, UITableViewDelegate, UIT
                 }
                 if indexis.count > 0 {
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.showIndicator = false
                         if self.data.count == (json!["kids"] as! [AnyObject]).count {
                             self.tableView.reloadData()
                         } else {
@@ -98,6 +104,7 @@ class ChildrenListViewController: CameraViewController, UITableViewDelegate, UIT
                 ServerConnectionsManager.sharedInstance.sendMultipartData(path: "api/v1/kids/\(self.childId!)/delivered", file: (result! as NSString).lastPathComponent, data: nil, callback: { (result, json) -> Void in
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         self.waitingView.removeFromSuperview()
+                        self.data.removeAtIndex((self.childIndexPath?.row)!)
                         self.tableView.deleteRowsAtIndexPaths([self.childIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
                         self.childIndexPath = nil
                     })
@@ -122,7 +129,7 @@ class ChildrenListViewController: CameraViewController, UITableViewDelegate, UIT
         return 1
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.data.count == 0 {return 1}
+        if self.data.count == 0 && showIndicator {return 1}
         return self.data.count
     }
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
