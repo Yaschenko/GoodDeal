@@ -14,7 +14,6 @@ class ChildRegistrationViewController: CameraViewController, UITextFieldDelegate
     @IBOutlet var address:UITextField!
     @IBOutlet var prize:UITextView!
     @IBOutlet var bottomConstraint:NSLayoutConstraint!
-    @IBOutlet var waitingView:UIView!
     var keyboard:Bool!
     let bottomConstraintDefaultValue:CGFloat! = 8
     var needSend:Bool = false
@@ -80,9 +79,7 @@ class ChildRegistrationViewController: CameraViewController, UITextFieldDelegate
 
     func send() {
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            let mainView = UIApplication.sharedApplication().keyWindow
-            self.waitingView.frame = (mainView?.bounds)!
-            mainView?.addSubview(self.waitingView)
+            self.showWaitingIndicatorView()
         }
         ServerConnectionsManager.sharedInstance.sendMultipartData(path: "api/v1/kids", file: (self.videoFile! as NSString).lastPathComponent, data: ["name":name.text!,"age":age.text!,"description":prize.text!, "address":address.text!], callback: { (result:Bool!, json:AnyObject?)->Void in
             if json != nil {

@@ -22,6 +22,7 @@
 		5AAA1C431C1C8735002649B8 /* ServerConnectionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAA1C421C1C8735002649B8 /* ServerConnectionsManager.swift */; };
 		5AAA1C451C1CCD60002649B8 /* ChildrenListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAA1C441C1CCD60002649B8 /* ChildrenListViewController.swift */; };
 		5AAA1C471C1CD9EE002649B8 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAA1C461C1CD9EE002649B8 /* CameraViewController.swift */; };
+		5AAA1C491C1D017E002649B8 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAA1C481C1D017E002649B8 /* BaseViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		5AAA1C421C1C8735002649B8 /* ServerConnectionsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerConnectionsManager.swift; sourceTree = "<group>"; };
 		5AAA1C441C1CCD60002649B8 /* ChildrenListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChildrenListViewController.swift; sourceTree = "<group>"; };
 		5AAA1C461C1CD9EE002649B8 /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		5AAA1C481C1D017E002649B8 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +125,7 @@
 				5A9FD6B61C1C56EA005EC005 /* Info.plist */,
 				5A9FD6AE1C1C56EA005EC005 /* GoodDeal.xcdatamodeld */,
 				5A9FD6D81C1C5EB6005EC005 /* Main.storyboard */,
+				5AAA1C481C1D017E002649B8 /* BaseViewController.swift */,
 				5AAA1C441C1CCD60002649B8 /* ChildrenListViewController.swift */,
 				5AAA1C3E1C1C6B12002649B8 /* ChildRegistrationViewController.swift */,
 				5A9FD6DA1C1C6247005EC005 /* MenuViewController.swift */,
@@ -287,6 +290,7 @@
 				5A9FD6AA1C1C56EA005EC005 /* LoginViewController.swift in Sources */,
 				5A9FD6B01C1C56EA005EC005 /* GoodDeal.xcdatamodeld in Sources */,
 				5A9FD6A81C1C56EA005EC005 /* AppDelegate.swift in Sources */,
+				5AAA1C491C1D017E002649B8 /* BaseViewController.swift in Sources */,
 				5AAA1C471C1CD9EE002649B8 /* CameraViewController.swift in Sources */,
 				5AAA1C431C1C8735002649B8 /* ServerConnectionsManager.swift in Sources */,
 				5A9FD6DB1C1C6247005EC005 /* MenuViewController.swift in Sources */,

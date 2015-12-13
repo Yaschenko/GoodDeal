@@ -10,8 +10,9 @@ import UIKit
 import MobileCoreServices
 import AVFoundation
 
-class CameraViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class CameraViewController: BaseViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     @IBOutlet var imagePickerButton:UIButton!
+
     var videoFile:String?
     lazy var imagePicker:UIImagePickerController! = {
         let picker:UIImagePickerController! = UIImagePickerController()
@@ -19,6 +20,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         picker.mediaTypes = [kUTTypeMovie as String]
         picker.allowsEditing = false
         picker.delegate = self
+        picker.videoQuality = UIImagePickerControllerQualityType.TypeMedium
         return picker
     }()
     override func viewDidLoad() {
@@ -51,7 +53,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         if url != nil {
             weak var weakSelf:CameraViewController?
             weakSelf = self
-            let exportSession:AVAssetExportSession = AVAssetExportSession(asset: AVAsset(URL: url!), presetName: AVAssetExportPresetHighestQuality)!
+            let exportSession:AVAssetExportSession = AVAssetExportSession(asset: AVAsset(URL: url!), presetName: AVAssetExportPresetMediumQuality)!
             exportSession.outputFileType = AVFileTypeMPEG4
             exportSession.outputURL = NSURL(fileURLWithPath: self.createTempDirectory())
             exportSession.exportAsynchronouslyWithCompletionHandler({ () -> Void in

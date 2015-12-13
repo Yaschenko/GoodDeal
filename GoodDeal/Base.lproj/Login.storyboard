@@ -60,9 +60,24 @@
                     <connections>
                         <outlet property="login" destination="bEP-a1-8rL" id="Lb9-Nw-rFj"/>
                         <outlet property="password" destination="iMd-bb-o9z" id="567-CM-vss"/>
+                        <outlet property="waitingView" destination="UuP-9U-fOo" id="MeK-cH-gxD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="UuP-9U-fOo">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="rDt-8E-h4k">
+                            <rect key="frame" x="110" y="54" width="20" height="20"/>
+                        </activityIndicatorView>
+                    </subviews>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstItem="rDt-8E-h4k" firstAttribute="centerX" secondItem="UuP-9U-fOo" secondAttribute="centerX" id="I5a-GX-VvY"/>
+                        <constraint firstItem="rDt-8E-h4k" firstAttribute="centerY" secondItem="UuP-9U-fOo" secondAttribute="centerY" id="y93-1I-Ox7"/>
+                    </constraints>
+                </view>
             </objects>
             <point key="canvasLocation" x="340" y="363"/>
         </scene>

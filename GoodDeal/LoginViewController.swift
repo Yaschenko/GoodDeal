@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginViewController: UIViewController, UITextFieldDelegate {
+class LoginViewController: BaseViewController, UITextFieldDelegate {
     
     @IBOutlet var login:UITextField!
     @IBOutlet var password:UITextField!
@@ -42,8 +42,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBAction func loginAction() {
         let checkDataResult = self.checkData()
         if checkDataResult.result {
+            self.showWaitingIndicatorView()
             ServerConnectionsManager.sharedInstance.sendPostRequest(path: "api/v1/sessions", data: ["email":login.text!, "password":password.text!], callback: {(result:Bool!, json:AnyObject?)->Void in
-                print(json!.description)
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.waitingView.removeFromSuperview()
+                })
                 if result == true {
                     NSUserDefaults.standardUserDefaults().setValue(json!["auth_token"] as! String, forKey: "auth_token")
                     NSUserDefaults.standardUserDefaults().setValue(json!["email"] as! String, forKey: "email")

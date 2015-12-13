@@ -71,7 +71,8 @@ class ServerConnectionsManager : NSObject, NSURLSessionDelegate{
         urlRequest.HTTPBody = bodyData
         urlRequest.HTTPMethod = "POST"
         urlRequest.setValue("\(bodyData.length)", forHTTPHeaderField: "Content-Length")
-        if let token:String? = NSUserDefaults.standardUserDefaults().valueForKey("auth_token") as? String {
+        let token:String? = NSUserDefaults.standardUserDefaults().valueForKey("auth_token") as? String
+        if token != nil {
             urlRequest.setValue("Token token=\"\(token!)\"", forHTTPHeaderField:"Authorization")
         }
         self.sendRequest(urlRequest, callback: callback)
@@ -91,7 +92,8 @@ class ServerConnectionsManager : NSObject, NSURLSessionDelegate{
         }
         
         urlRequest.HTTPMethod = "POST"
-        if let token:String? = NSUserDefaults.standardUserDefaults().valueForKey("auth_token") as? String {
+        let token:String? = NSUserDefaults.standardUserDefaults().valueForKey("auth_token") as? String
+        if token != nil {
             urlRequest.setValue("Token token=\"\(token!)\"", forHTTPHeaderField:"Authorization")
         }
         self.sendRequest(urlRequest, callback: callback)
@@ -111,11 +113,22 @@ class ServerConnectionsManager : NSObject, NSURLSessionDelegate{
         }
         
         urlRequest.HTTPMethod = "GET"
-        if let token:String? = NSUserDefaults.standardUserDefaults().valueForKey("auth_token") as? String {
+        let token:String? = NSUserDefaults.standardUserDefaults().valueForKey("auth_token") as? String
+        if token != nil {
             urlRequest.setValue("Token token=\"\(token!)\"", forHTTPHeaderField:"Authorization")
         }
         self.sendRequest(urlRequest, callback: callback)
     }
-
+    func downloadFile(urlFile:NSURL, callback:((result:Bool!, json:AnyObject?)->Void)?) {
+        self.urlSession.downloadTaskWithURL(urlFile) { (url:NSURL?, response:NSURLResponse?, error:NSError?) -> Void in
+            print(url?.absoluteString)
+            if callback == nil {return}
+            if error == nil {
+                callback!(result: true, json: url)
+            } else {
+                callback!(result: false, json: nil)
+            }
+        }.resume()
+    }
     static let sharedInstance = ServerConnectionsManager(server: "https://60a58c86.ngrok.io/")
 }
