@@ -38,13 +38,46 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ChildInfoCell" id="Q6C-4z-toD">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ChildInfoCell" id="Q6C-4z-toD" customClass="ChildCell" customModule="GoodDeal" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="92" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Q6C-4z-toD" id="dG2-PD-TQO">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ExR-SU-6Ym">
+                                                    <rect key="frame" x="266" y="7" width="46" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="CxY-eD-odN"/>
+                                                        <constraint firstAttribute="width" constant="46" id="Dzt-Zk-Bf4"/>
+                                                    </constraints>
+                                                    <state key="normal" title="Button"/>
+                                                    <connections>
+                                                        <action selector="buttonAction" destination="Q6C-4z-toD" eventType="touchUpInside" id="4cr-fn-ZdN"/>
+                                                    </connections>
+                                                </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IlL-i5-InR">
+                                                    <rect key="frame" x="8" y="11" width="250" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="21" id="m0X-J9-tLV"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="IlL-i5-InR" firstAttribute="top" secondItem="dG2-PD-TQO" secondAttribute="top" constant="11" id="1zm-UY-PDB"/>
+                                                <constraint firstItem="ExR-SU-6Ym" firstAttribute="top" secondItem="dG2-PD-TQO" secondAttribute="top" constant="7" id="KU2-V7-TRK"/>
+                                                <constraint firstItem="IlL-i5-InR" firstAttribute="leading" secondItem="dG2-PD-TQO" secondAttribute="leading" constant="8" id="nGP-wJ-oWu"/>
+                                                <constraint firstItem="ExR-SU-6Ym" firstAttribute="leading" secondItem="IlL-i5-InR" secondAttribute="trailing" constant="8" id="we2-xo-pIT"/>
+                                                <constraint firstAttribute="trailing" secondItem="ExR-SU-6Ym" secondAttribute="trailing" constant="8" id="z5N-X2-h3S"/>
+                                            </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="button" destination="ExR-SU-6Ym" id="fcE-RE-XPl"/>
+                                            <outlet property="titleLabel" destination="IlL-i5-InR" id="x2d-Ce-Aa0"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LoadCell" id="5Vr-7w-Hny">
                                         <rect key="frame" x="0.0" y="136" width="320" height="44"/>

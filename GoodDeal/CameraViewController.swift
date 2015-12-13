@@ -11,7 +11,7 @@ import MobileCoreServices
 import AVFoundation
 
 class CameraViewController: BaseViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    @IBOutlet var imagePickerButton:UIButton!
+    @IBOutlet weak var imagePickerButton:UIButton!
 
     var videoFile:String?
     lazy var imagePicker:UIImagePickerController! = {
@@ -77,6 +77,26 @@ class CameraViewController: BaseViewController, UIImagePickerControllerDelegate,
             
         }
     }
+    
+    @IBAction func showImagePickerController() {
+        self.view.endEditing(true)
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
+            self.presentViewController(self.imagePicker, animated: true, completion: { () -> Void in
+                
+            })
+        }
+        else {
+            let alert : UIAlertController! = UIAlertController(title: "Ошибка", message: "Не получилось загрузить камеру", preferredStyle: UIAlertControllerStyle.Alert)
+            
+            let defaultAction : UIAlertAction! = UIAlertAction(title: "Хорошо", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction) -> Void in
+            })
+            alert.addAction(defaultAction)
+            self.presentViewController(alert, animated: true, completion: { () -> Void in
+                
+            })
+        }
+    }
+
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         videoFile = nil
         imagePickerButton.setTitle("Изменить видео обращение", forState: UIControlState.Normal)

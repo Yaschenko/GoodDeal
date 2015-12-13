@@ -10,13 +10,27 @@ import UIKit
 import AVKit
 import AVFoundation
 import MediaPlayer
-
-class ChildrenListViewController: CameraViewController, UITableViewDelegate, UITableViewDataSource {
+protocol ChildCellActionDelegate : NSObjectProtocol {
+    func didClickCell(cell:UITableViewCell)
+}
+class ChildCell: UITableViewCell {
+    @IBOutlet weak var button:UIButton!
+    @IBOutlet weak var titleLabel:UILabel!
+    weak var actionDelegate:protocol<ChildCellActionDelegate>?
+    @IBAction func buttonAction() {
+        if actionDelegate != nil {
+            actionDelegate?.didClickCell(self)
+        }
+    }
+}
+class ChildrenListViewController: CameraViewController, UITableViewDelegate, UITableViewDataSource, ChildCellActionDelegate {
     var page:Int! = 1
     var hasNextPage:Bool = false
-    @IBOutlet var tableView:UITableView!
+    @IBOutlet weak var tableView:UITableView!
     var data = [AnyObject]()
     var isLoading:Bool = false
+    var childId:Int? = nil
+    var childIndexPath:NSIndexPath? = nil
     override func viewDidLoad() {
         super.viewDidLoad()
         self.loadData(1)
@@ -32,13 +46,9 @@ class ChildrenListViewController: CameraViewController, UITableViewDelegate, UIT
         self.page = page
         hasNextPage = false
         isLoading = true
-        tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: self.data.count, inSection: 0)], withRowAnimation: UITableViewRowAnimation.None)
         ServerConnectionsManager.sharedInstance.sendGetRequest(path: "api/v1/kids", data: ["page":"\(page)"]) { (result:Bool!, json:AnyObject?) -> Void in
             
             self.isLoading = false
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: self.data.count, inSection: 0)], withRowAnimation: UITableViewRowAnimation.None)
-            })
             if result == true && json != nil{
                 self.hasNextPage = ((json!["links"] as! [AnyObject]).count > 1)
                 if (json!["kids"] as! [AnyObject]).count == 0 {
@@ -54,7 +64,11 @@ class ChildrenListViewController: CameraViewController, UITableViewDelegate, UIT
                 }
                 if indexis.count > 0 {
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        self.tableView.insertRowsAtIndexPaths(indexis, withRowAnimation: UITableViewRowAnimation.Automatic)
+                        if self.data.count == (json!["kids"] as! [AnyObject]).count {
+                            self.tableView.reloadData()
+                        } else {
+                            self.tableView.insertRowsAtIndexPaths(indexis, withRowAnimation: UITableViewRowAnimation.Automatic)
+                        }
                     })
                 }
             }
@@ -71,6 +85,7 @@ class ChildrenListViewController: CameraViewController, UITableViewDelegate, UIT
     */
     override func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         self.dismissViewControllerAnimated(true) { () -> Void in
+            if self.childId == nil {return}
             self.showWaitingIndicatorView()
             self.prepareVideo(info[UIImagePickerControllerMediaURL] as? NSURL) { (result:String?) -> Void in
                 if result == nil {
@@ -79,9 +94,11 @@ class ChildrenListViewController: CameraViewController, UITableViewDelegate, UIT
                     })
                     return
                 }
-                ServerConnectionsManager.sharedInstance.sendMultipartData(path: "api/v1/kids/\(5)/delivered", file: (result! as NSString).lastPathComponent, data: nil, callback: { (result, json) -> Void in
+                ServerConnectionsManager.sharedInstance.sendMultipartData(path: "api/v1/kids/\(self.childId!)/delivered", file: (result! as NSString).lastPathComponent, data: nil, callback: { (result, json) -> Void in
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         self.waitingView.removeFromSuperview()
+                        self.tableView.deleteRowsAtIndexPaths([self.childIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
+                        self.childIndexPath = nil
                     })
                 })
                 
@@ -94,28 +111,39 @@ class ChildrenListViewController: CameraViewController, UITableViewDelegate, UIT
         playerVC.player = AVPlayer(URL: fileUrl)
         return playerVC
     }
-
+    func didClickCell(cell: UITableViewCell) {
+        childIndexPath = self.tableView.indexPathForCell(cell)!
+        print(data[childIndexPath!.row].description)
+        self.childId = data[childIndexPath!.row]["id"] as? Int
+        self.showImagePickerController()
+    }
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.data.count+1
+        if self.data.count == 0 {return 1}
+        return self.data.count
+    }
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.row == self.data.count-1 && !isLoading && hasNextPage {
+            self.loadData(page+1)
+        }
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell:UITableViewCell!
-        if indexPath.row == self.data.count {
-            cell = tableView.dequeueReusableCellWithIdentifier("LoadCell", forIndexPath: indexPath)
-            cell.viewWithTag(1)!.hidden = !self.isLoading
-        } else {
-            cell = tableView.dequeueReusableCellWithIdentifier("ChildInfoCell", forIndexPath: indexPath)
-            cell.textLabel?.text = data[indexPath.row]["name"] as? String
-        }
         
-        return cell
+        if self.data.count == 0 {
+            let cell:UITableViewCell! = tableView.dequeueReusableCellWithIdentifier("LoadCell", forIndexPath: indexPath)
+            return cell
+        } else {
+            let cell:ChildCell! = tableView.dequeueReusableCellWithIdentifier("ChildInfoCell", forIndexPath: indexPath) as! ChildCell
+            cell.titleLabel?.text = data[indexPath.row]["name"] as? String
+            cell.actionDelegate = self
+            return cell
+        }
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
-        if indexPath.row == self.data.count {return}
+        if 0 == self.data.count {return}
         self.showWaitingIndicatorView()
         ServerConnectionsManager.sharedInstance.downloadFile(NSURL(string: ServerConnectionsManager.sharedInstance.serverUrlString.stringByAppendingString(data[indexPath.row]["video"] as! String))!) { (result, json) -> Void in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in

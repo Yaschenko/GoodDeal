@@ -9,11 +9,11 @@
 import UIKit
 
 class ChildRegistrationViewController: CameraViewController, UITextFieldDelegate, UITextViewDelegate {
-    @IBOutlet var name:UITextField!
-    @IBOutlet var age:UITextField!
-    @IBOutlet var address:UITextField!
-    @IBOutlet var prize:UITextView!
-    @IBOutlet var bottomConstraint:NSLayoutConstraint!
+    @IBOutlet weak var name:UITextField!
+    @IBOutlet weak var age:UITextField!
+    @IBOutlet weak var address:UITextField!
+    @IBOutlet weak var prize:UITextView!
+    @IBOutlet weak var bottomConstraint:NSLayoutConstraint!
     var keyboard:Bool!
     let bottomConstraintDefaultValue:CGFloat! = 8
     var needSend:Bool = false
@@ -57,24 +57,6 @@ class ChildRegistrationViewController: CameraViewController, UITextFieldDelegate
             return false
         }
         return true
-    }
-    @IBAction func showImagePickerController() {
-        self.view.endEditing(true)
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
-            self.presentViewController(self.imagePicker, animated: true, completion: { () -> Void in
-                
-            })
-        }
-        else {
-            let alert : UIAlertController! = UIAlertController(title: "Ошибка", message: "Не получилось загрузить камеру", preferredStyle: UIAlertControllerStyle.Alert)
-            
-            let defaultAction : UIAlertAction! = UIAlertAction(title: "Хорошо", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction) -> Void in
-            })
-            alert.addAction(defaultAction)
-            self.presentViewController(alert, animated: true, completion: { () -> Void in
-                
-            })
-        }
     }
 
     func send() {

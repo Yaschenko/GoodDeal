@@ -7,14 +7,29 @@
 //
 
 import UIKit
-
+class CustomTextField:UITextField {
+    override func textRectForBounds(bounds: CGRect) -> CGRect {
+        return CGRectInset(bounds, 9, 0)
+    }
+    override func editingRectForBounds(bounds: CGRect) -> CGRect {
+        return CGRectInset(bounds, 9, 0)
+    }
+}
 class LoginViewController: BaseViewController, UITextFieldDelegate {
     
-    @IBOutlet var login:UITextField!
-    @IBOutlet var password:UITextField!
+    @IBOutlet weak var login:CustomTextField!
+    @IBOutlet weak var password:CustomTextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        login.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).CGColor
+        login.layer.borderWidth = 1
+        login.layer.cornerRadius = 5
+        login.layer.masksToBounds = true
+        password.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).CGColor
+        password.layer.borderWidth = 1
+        password.layer.cornerRadius = 5
+        password.layer.masksToBounds = true
         // Do any additional setup after loading the view, typically from a nib.
     }
 

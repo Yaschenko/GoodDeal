@@ -9,7 +9,7 @@
 import UIKit
 
 class BaseViewController: UIViewController {
-    @IBOutlet var waitingView:UIView!
+    @IBOutlet weak var waitingView:UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
 
