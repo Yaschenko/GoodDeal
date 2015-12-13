@@ -38,6 +38,7 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     func checkData() -> (result:Bool, error:String?, field:UITextField?) {
+        self.view.endEditing(true)
         if login.text == nil || login.text?.characters.count == 0{
             return (false, "Введите электронную почту", login)
         }
