@@ -16,6 +16,7 @@ protocol ChildCellActionDelegate : NSObjectProtocol {
 class ChildCell: UITableViewCell {
     @IBOutlet weak var button:UIButton!
     @IBOutlet weak var titleLabel:UILabel!
+    @IBOutlet weak var addressLabel:UILabel!
     weak var actionDelegate:protocol<ChildCellActionDelegate>?
     @IBAction func buttonAction() {
         if actionDelegate != nil {
@@ -137,6 +138,7 @@ class ChildrenListViewController: CameraViewController, UITableViewDelegate, UIT
         } else {
             let cell:ChildCell! = tableView.dequeueReusableCellWithIdentifier("ChildInfoCell", forIndexPath: indexPath) as! ChildCell
             cell.titleLabel?.text = data[indexPath.row]["name"] as? String
+            cell.addressLabel?.text = data[indexPath.row]["address"] as? String
             cell.actionDelegate = self
             return cell
         }
