@@ -24,12 +24,16 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
         super.viewDidLoad()
         login.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).CGColor
         login.layer.borderWidth = 1
-        login.layer.cornerRadius = 5
-        login.layer.masksToBounds = true
+        let loginText = NSAttributedString(string: "Логин", attributes: [NSForegroundColorAttributeName:UIColor.whiteColor()])
+        login.attributedPlaceholder = loginText
+//        login.layer.cornerRadius = 5
+//        login.layer.masksToBounds = true
         password.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).CGColor
         password.layer.borderWidth = 1
-        password.layer.cornerRadius = 5
-        password.layer.masksToBounds = true
+        let passwordText = NSAttributedString(string: "Пароль", attributes: [NSForegroundColorAttributeName:UIColor.whiteColor()])
+        password.attributedPlaceholder = passwordText
+//        password.layer.cornerRadius = 5
+//        password.layer.masksToBounds = true
         // Do any additional setup after loading the view, typically from a nib.
     }
 

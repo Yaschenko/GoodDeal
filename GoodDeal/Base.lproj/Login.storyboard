@@ -46,10 +46,12 @@
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="poA-Ra-gnq">
                                 <rect key="frame" x="44" y="319" width="232" height="36"/>
+                                <color key="backgroundColor" red="0.11878816270000001" green="0.17522927238947372" blue="0.41282375565263152" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="36" id="drn-7r-JcU"/>
                                 </constraints>
-                                <state key="normal" image="enterButton"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <state key="normal" title="ВОЙТИ"/>
                                 <connections>
                                     <action selector="loginAction" destination="BYZ-38-t0r" eventType="touchUpInside" id="dNA-ey-pae"/>
                                 </connections>
@@ -114,7 +116,6 @@
     </scenes>
     <resources>
         <image name="bg" width="327" height="568"/>
-        <image name="enterButton" width="232" height="36"/>
         <image name="logo" width="113" height="24"/>
     </resources>
 </document>

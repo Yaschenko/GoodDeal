@@ -11,7 +11,7 @@ import MobileCoreServices
 import AVFoundation
 
 class CameraViewController: BaseViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    @IBOutlet weak var imagePickerButton:UIButton!
+    @IBOutlet weak var imagePickerButton:UIButton?
 
     var videoFile:String?
     lazy var imagePicker:UIImagePickerController! = {
@@ -99,7 +99,7 @@ class CameraViewController: BaseViewController, UIImagePickerControllerDelegate,
 
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         videoFile = nil
-        imagePickerButton.setTitle("Изменить видео обращение", forState: UIControlState.Normal)
+//        imagePickerButton.setTitle("Изменить видео обращение", forState: UIControlState.Normal)
         self.dismissViewControllerAnimated(true) { () -> Void in
             weak var weakSelf:CameraViewController?
             weakSelf = self

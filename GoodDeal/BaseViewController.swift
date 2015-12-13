@@ -25,7 +25,9 @@ class BaseViewController: UIViewController {
         self.waitingView.frame = (mainView?.bounds)!
         mainView?.addSubview(self.waitingView)
     }
-
+    @IBAction func backAction() {
+        self.navigationController?.popViewControllerAnimated(true)
+    }
     /*
     // MARK: - Navigation
 

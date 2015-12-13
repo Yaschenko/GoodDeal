@@ -14,8 +14,9 @@ class ChildRegistrationViewController: CameraViewController, UITextFieldDelegate
     @IBOutlet weak var address:UITextField!
     @IBOutlet weak var prize:UITextView!
     @IBOutlet weak var bottomConstraint:NSLayoutConstraint!
+    @IBOutlet weak var topConstraint:NSLayoutConstraint!
     var keyboard:Bool!
-    let bottomConstraintDefaultValue:CGFloat! = 8
+    let bottomConstraintDefaultValue:CGFloat! = 65
     var needSend:Bool = false
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,9 +24,25 @@ class ChildRegistrationViewController: CameraViewController, UITextFieldDelegate
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShowNotification:", name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHideNotification:", name: UIKeyboardWillHideNotification, object: nil)
         prize.layer.borderWidth = 1
-        prize.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).CGColor
-        prize.layer.masksToBounds = true
-        prize.layer.cornerRadius = 5
+        prize.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).CGColor
+        
+        name.layer.borderWidth = 1
+        name.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).CGColor
+        let nameText = NSAttributedString(string: "ФИО", attributes: [NSForegroundColorAttributeName:UIColor.whiteColor()])
+        name.attributedPlaceholder = nameText
+        
+        age.layer.borderWidth = 1
+        age.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).CGColor
+        let ageText = NSAttributedString(string: "Возраст", attributes: [NSForegroundColorAttributeName:UIColor.whiteColor()])
+        age.attributedPlaceholder = ageText
+
+        address.layer.borderWidth = 1
+        address.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).CGColor
+        let addressText = NSAttributedString(string: "Адрес", attributes: [NSForegroundColorAttributeName:UIColor.whiteColor()])
+        address.attributedPlaceholder = addressText
+        
+//        prize.layer.masksToBounds = true
+//        prize.layer.cornerRadius = 5
         // Do any additional setup after loading the view.
     }
 
@@ -35,17 +52,20 @@ class ChildRegistrationViewController: CameraViewController, UITextFieldDelegate
     }
     
     func keyboardWillShowNotification(notification:NSNotification) {
+        if !prize.isFirstResponder(){return}
         keyboard = true
         let info:[NSObject : AnyObject]? = notification.userInfo
         if info == nil {return;}
         let kbSize:CGSize = (info![UIKeyboardFrameEndUserInfoKey]?.CGRectValue.size)!
         bottomConstraint.constant = bottomConstraintDefaultValue + kbSize.height
+        topConstraint.constant = 0 - kbSize.height
         self.view.layoutIfNeeded()
         
     }
     func keyboardWillHideNotification(notification:NSNotification) {
         keyboard = false
         bottomConstraint.constant = bottomConstraintDefaultValue
+        topConstraint.constant = 0
         self.view.layoutIfNeeded()
     }
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -92,7 +112,7 @@ class ChildRegistrationViewController: CameraViewController, UITextFieldDelegate
     }
     override func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         videoFile = nil
-        imagePickerButton.setTitle("Изменить видео обращение", forState: UIControlState.Normal)
+//        imagePickerButton.setTitle("Изменить видео обращение", forState: UIControlState.Normal)
         self.dismissViewControllerAnimated(true) { () -> Void in
             weak var weakSelf:ChildRegistrationViewController?
             weakSelf = self
