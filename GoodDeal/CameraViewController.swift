@@ -21,6 +21,7 @@ class CameraViewController: BaseViewController, UIImagePickerControllerDelegate,
         picker.allowsEditing = false
         picker.delegate = self
         picker.videoQuality = UIImagePickerControllerQualityType.TypeMedium
+        picker.videoMaximumDuration = 30
         return picker
     }()
     override func viewDidLoad() {
@@ -48,7 +49,10 @@ class CameraViewController: BaseViewController, UIImagePickerControllerDelegate,
         let tempDirectoryTemplate:String = NSTemporaryDirectory().stringByAppendingString("file\(Int(NSDate().timeIntervalSince1970)).mp4")
         return tempDirectoryTemplate
     }
-    
+    func createTempDirectoryWithExtantion(extantion:String!) -> String {
+        let tempDirectoryTemplate:String = NSTemporaryDirectory().stringByAppendingString("file\(Int(NSDate().timeIntervalSince1970)).\(extantion)")
+        return tempDirectoryTemplate
+    }
     func prepareVideo(url:NSURL?, callback:(result:String?)->Void) {
         if url != nil {
             weak var weakSelf:CameraViewController?

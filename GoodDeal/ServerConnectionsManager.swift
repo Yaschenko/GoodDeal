@@ -20,8 +20,8 @@ class ServerConnectionsManager : NSObject, NSURLSessionDelegate{
     
     func sendRequest(urlRequest:NSURLRequest!, callback:((result:Bool!, json:AnyObject?)->Void)?) {
         let task:NSURLSessionDataTask = self.urlSession.dataTaskWithRequest(urlRequest, completionHandler: {(data:NSData?, response:NSURLResponse?, error:NSError?) -> Void in
-            print(NSString(data: data!, encoding: NSUTF8StringEncoding))
             if data != nil {
+                print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                 var json:AnyObject?
                 var result:Bool! = true
                 do {
@@ -100,7 +100,7 @@ class ServerConnectionsManager : NSObject, NSURLSessionDelegate{
     }
     func sendGetRequest(path path:String!, data:[String:String]?, callback:((result:Bool!, json:AnyObject?)->Void)?) {
         var requestUrl:String! = self.serverUrlString+path
-        let urlRequest:NSMutableURLRequest = NSMutableURLRequest(URL: NSURL(string: requestUrl)!)
+//        let urlRequest:NSMutableURLRequest = NSMutableURLRequest(URL: NSURL(string: requestUrl)!)
         var httpData:String = "?"
         if data != nil {
             for (key, value) in data! {
@@ -111,7 +111,7 @@ class ServerConnectionsManager : NSObject, NSURLSessionDelegate{
             }
             requestUrl.appendContentsOf(httpData)
         }
-        
+        let urlRequest:NSMutableURLRequest = NSMutableURLRequest(URL: NSURL(string: requestUrl)!)
         urlRequest.HTTPMethod = "GET"
         let token:String? = NSUserDefaults.standardUserDefaults().valueForKey("auth_token") as? String
         if token != nil {
@@ -119,16 +119,17 @@ class ServerConnectionsManager : NSObject, NSURLSessionDelegate{
         }
         self.sendRequest(urlRequest, callback: callback)
     }
-    func downloadFile(urlFile:NSURL, callback:((result:Bool!, json:AnyObject?)->Void)?) {
+    func downloadFile(urlFile:NSURL, callback:((result:Bool!, json:AnyObject?, response:NSURLResponse?)->Void)?) {
         self.urlSession.downloadTaskWithURL(urlFile) { (url:NSURL?, response:NSURLResponse?, error:NSError?) -> Void in
             print(url?.absoluteString)
             if callback == nil {return}
             if error == nil {
-                callback!(result: true, json: url)
+                callback!(result: true, json: url, response: response)
             } else {
-                callback!(result: false, json: nil)
+                callback!(result: false, json: nil, response: response)
             }
         }.resume()
     }
-    static let sharedInstance = ServerConnectionsManager(server: "https://60a58c86.ngrok.io/")
+    static let sharedInstance = ServerConnectionsManager(server: "http://gooddeal.my-dis.com/")
+//    static let sharedInstance = ServerConnectionsManager(server: "http://c57a7464.ngrok.io/")
 }

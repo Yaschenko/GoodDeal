@@ -15,6 +15,7 @@ class ChildRegistrationViewController: CameraViewController, UITextFieldDelegate
     @IBOutlet weak var prize:UITextView!
     @IBOutlet weak var bottomConstraint:NSLayoutConstraint!
     @IBOutlet weak var topConstraint:NSLayoutConstraint!
+    @IBOutlet weak var prizeLabel:UILabel!
     var keyboard:Bool!
     let bottomConstraintDefaultValue:CGFloat! = 65
     var needSend:Bool = false
@@ -52,15 +53,23 @@ class ChildRegistrationViewController: CameraViewController, UITextFieldDelegate
     }
     
     func keyboardWillShowNotification(notification:NSNotification) {
-        if !prize.isFirstResponder(){return}
         keyboard = true
         let info:[NSObject : AnyObject]? = notification.userInfo
         if info == nil {return;}
         let kbSize:CGSize = (info![UIKeyboardFrameEndUserInfoKey]?.CGRectValue.size)!
-        bottomConstraint.constant = bottomConstraintDefaultValue + kbSize.height
-        topConstraint.constant = 0 - kbSize.height
-        self.view.layoutIfNeeded()
         
+        if prize.isFirstResponder() {
+            bottomConstraint.constant = bottomConstraintDefaultValue + kbSize.height - 50
+            topConstraint.constant = 0 - kbSize.height + 50
+        } else if address.isFirstResponder() {
+            bottomConstraint.constant = bottomConstraintDefaultValue + (kbSize.height/3)
+            topConstraint.constant = 0 - (kbSize.height/3)
+        } else {
+            bottomConstraint.constant = bottomConstraintDefaultValue
+            topConstraint.constant = 0
+        }
+        
+        self.view.layoutIfNeeded()
     }
     func keyboardWillHideNotification(notification:NSNotification) {
         keyboard = false
@@ -78,23 +87,48 @@ class ChildRegistrationViewController: CameraViewController, UITextFieldDelegate
         }
         return true
     }
-
+    func textViewDidBeginEditing(textView: UITextView) {
+        self.prizeLabel.hidden = true
+    }
+    func textViewDidEndEditing(textView: UITextView) {
+        if textView.text.characters.count == 0 {
+            self.prizeLabel.hidden = false
+        }
+    }
+    func showShareView(url:String!, imageUrl:String?) {
+        let truncated = ServerConnectionsManager.sharedInstance.serverUrlString.substringToIndex(ServerConnectionsManager.sharedInstance.serverUrlString.endIndex.predecessor())
+        let shareData:[NSURL] = [NSURL(string: truncated + url)!]
+        
+        let activityViewController:UIActivityViewController = UIActivityViewController(activityItems: shareData, applicationActivities: nil)
+        activityViewController.completionWithItemsHandler = {(str:String?, result:Bool, objects:[AnyObject]?, error:NSError?) -> Void in
+            if error != nil {
+                let alert : UIAlertController! = UIAlertController(title: "Ошибка", message: error!.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                
+                let defaultAction : UIAlertAction! = UIAlertAction(title: "Готово", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction) -> Void in
+                    self.navigationController?.popViewControllerAnimated(true)
+                })
+                alert.addAction(defaultAction)
+                self.presentViewController(alert, animated: true, completion: { () -> Void in
+                })
+                return
+            }
+            self.navigationController?.popViewControllerAnimated(true)
+        }
+        self.presentViewController(activityViewController, animated: true) { () -> Void in
+            
+        }
+        
+    }
     func send() {
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            self.view.endEditing(true)
             self.showWaitingIndicatorView()
         }
         ServerConnectionsManager.sharedInstance.sendMultipartData(path: "api/v1/kids", file: (self.videoFile! as NSString).lastPathComponent, data: ["name":name.text!,"age":age.text!,"description":prize.text!, "address":address.text!], callback: { (result:Bool!, json:AnyObject?)->Void in
             if json != nil {
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     self.waitingView.removeFromSuperview()
-                    let alert : UIAlertController! = UIAlertController(title: "Готово", message: "Письмо отправлено", preferredStyle: UIAlertControllerStyle.Alert)
-                    
-                    let defaultAction : UIAlertAction! = UIAlertAction(title: "Хорошо", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction) -> Void in
-                        self.navigationController?.popViewControllerAnimated(true)
-                    })
-                    alert.addAction(defaultAction)
-                    self.presentViewController(alert, animated: true, completion: { () -> Void in
-                    })
+                    self.showShareView(json!["links"]!![0]!["href"] as! String, imageUrl: json!["thumb"] as? String)
                 })
             } else {
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
